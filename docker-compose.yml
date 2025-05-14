@@ -19,5 +19,18 @@ services:
       - portainer_data:/data
     command: --http-enabled
 
+  mysql:
+    image: mysql:8.0
+    container_name: mysql
+    restart: unless-stopped
+    environment:
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+      - MYSQL_DATABASE=${MYSQL_DATABASE}
+    volumes:
+      - mysql_data:/var/lib/mysql
+    ports:
+      - 3306:3306
+
 volumes:
   portainer_data:
+  mysql_data:
