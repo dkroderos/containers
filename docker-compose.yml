@@ -19,6 +19,19 @@ services:
       - portainer_data:/data
     command: --http-enabled
 
+  postgres:
+    image: postgres:17
+    container_name: postgres
+    restart: unless-stopped
+    environment:
+      - POSTGRES_DB=${POSTGRES_DB}
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+    volumes:
+      - postgresql_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+
   mysql:
     image: mysql:8.0
     container_name: mysql
@@ -33,4 +46,5 @@ services:
 
 volumes:
   portainer_data:
+  postgresql_data:
   mysql_data:
