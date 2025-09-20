@@ -1,13 +1,4 @@
 services:
-  cloudflared:
-    image: cloudflare/cloudflared:latest
-    container_name: cloudflared
-    network_mode: host
-    restart: unless-stopped
-    command: tunnel --no-autoupdate run
-    environment:
-      - TUNNEL_TOKEN=${TUNNEL_TOKEN}
-
   portainer:
     image: portainer/portainer-ce:lts
     container_name: portainer
@@ -18,6 +9,15 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
       - portainer_data:/data
     command: --http-enabled
+
+  cloudflared:
+    image: cloudflare/cloudflared:latest
+    container_name: cloudflared
+    network_mode: host
+    restart: unless-stopped
+    command: tunnel --no-autoupdate run
+    environment:
+      - TUNNEL_TOKEN=${TUNNEL_TOKEN}
 
   postgres:
     image: postgres:17
@@ -53,8 +53,18 @@ services:
     volumes:
       - redis_data:/data
 
+  actualbudget:
+    image: ghcr.io/actualbudget/actual:sha-8ae070a-alpine
+    container_name: actualbudget
+    restart: unless-stopped
+    ports:
+      - "5006:5006"
+    volumes:
+      - actualbudget_data:/data
+
 volumes:
   portainer_data:
   postgresql_data:
   mysql_data:
   redis_data:
+  actualbudget_data:
